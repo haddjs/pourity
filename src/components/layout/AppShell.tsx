@@ -7,7 +7,7 @@ import { TopNav } from './TopNav'
  */
 export function AppShell() {
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-parchment">
+    <div className="flex h-dvh flex-col overflow-hidden bg-parchment">
       <TopNav />
       <main className="min-h-0 flex-1">
         <Outlet />

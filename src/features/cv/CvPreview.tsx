@@ -20,7 +20,7 @@ export function CvPreview({ cv }: { cv: CvData }) {
   ].filter(Boolean)
 
   return (
-    <article className="cv-document mx-auto w-full max-w-[816px] px-12 py-12 shadow-[0_1px_3px_rgba(15,25,35,0.12),0_8px_24px_rgba(15,25,35,0.08)]">
+    <article className="cv-document mx-auto w-full max-w-[816px] px-6 py-8 shadow-[0_1px_3px_rgba(15,25,35,0.12),0_8px_24px_rgba(15,25,35,0.08)] sm:px-10 sm:py-10 lg:px-12 lg:py-12">
       {/* Name + headline */}
       <header className="mb-1">
         <h1 className="text-[26px] font-bold leading-tight text-black">
