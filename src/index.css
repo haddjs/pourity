@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Pourity design tokens — Swiss-influenced: strict grid, deliberate
+ * neutrals, a single expressive accent (Ember). See design guidelines.
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Color palette */
+  --color-midnight: #0f1923; /* Foreground, headings, nav ground */
+  --color-navy: #1b3a6b; /* Primary brand, interactive */
+  --color-navy-light: #2b4e8a; /* Hover state on primary */
+  --color-ember: #e85d27; /* Accent, CTA, highlights */
+  --color-ember-light: #f5a880; /* Tinted backgrounds */
+  --color-parchment: #f5f5f2; /* App background */
+  --color-stone: #ddddd9; /* Borders, dividers */
+  --color-slate: #6b7280; /* Muted text, labels */
+  --color-white: #ffffff; /* Cards, form fields */
+
+  /* Type faces */
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* App shell */
+  --spacing-nav: 56px;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-parchment);
+    color: var(--color-midnight);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--color-midnight);
+    margin: 0;
+  }
+}
+
+/* Uppercase label style used for form labels, tags, badges */
+@utility label-caps {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Independently-scrolling panels get a slim, neutral scrollbar */
+@utility scroll-panel {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-stone) transparent;
+}
+
+/* ------------------------------------------------------------------ *
+ * ATS-friendly CV document — standard fonts only (Arial / Calibri),
+ * single column, body-text contact info. Kept deliberately plain so
+ * applicant-tracking parsers read it cleanly.
+ * ------------------------------------------------------------------ */
+.cv-document {
+  font-family: Arial, Calibri, "Helvetica Neue", sans-serif;
+  color: #111111;
+  background: #ffffff;
+  line-height: 1.4;
+}
+
+/* ------------------------------------------------------------------ *
+ * Print — export the CV document only, as clean selectable text.
+ * ------------------------------------------------------------------ */
+@media print {
+  /* margin: 0 removes the browser's injected header/footer (date, title,
+   * URL, page number). Page margins are re-added as .cv-document padding. */
+  @page {
+    size: letter;
+    margin: 0;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .cv-document,
+  .cv-document * {
+    visibility: visible !important;
+  }
+
+  .cv-document {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0.5in 0.55in;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
