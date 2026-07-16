@@ -37,6 +37,13 @@ export interface ExperienceEntry {
   bullets: string;
 }
 
+/** A user-named extra field, e.g. "Final Project", "Achievements", "Thesis". */
+export interface CustomField {
+  id: string;
+  label: string;
+  value: string;
+}
+
 export interface EducationEntry {
   id: string;
   school: string;
@@ -46,6 +53,10 @@ export interface EducationEntry {
   startDate: string;
   endDate: string;
   current: boolean;
+  /** Optional — grade point average. */
+  gpa?: string;
+  /** Optional user-defined fields (achievements, projects, etc.). */
+  customFields?: CustomField[];
 }
 
 export interface SkillCategory {

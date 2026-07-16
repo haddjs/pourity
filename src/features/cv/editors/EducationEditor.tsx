@@ -3,6 +3,8 @@ import { uid } from "../../../lib/format";
 import { TextField } from "../../../components/ui/Field";
 import { Button } from "../../../components/ui/Button";
 import { EntryCard } from "../FormSection";
+import { DateRangeFields } from "./DateRangeFields";
+import { CustomFieldsEditor } from "./CustomFieldsEditor";
 
 interface Props {
   value: EducationEntry[];
@@ -18,6 +20,8 @@ const empty = (): EducationEntry => ({
   startDate: "",
   endDate: "",
   current: false,
+  gpa: "",
+  customFields: [],
 });
 
 export function EducationEditor({ value, onChange }: Props) {
@@ -57,41 +61,31 @@ export function EducationEditor({ value, onChange }: Props) {
               onChange={(e) => update(entry.id, { field: e.target.value })}
             />
           </div>
-          <TextField
-            label="Location"
-            value={entry.location}
-            placeholder="Berkeley, CA"
-            onChange={(e) => update(entry.id, { location: e.target.value })}
-          />
           <div className="grid grid-cols-2 gap-3">
             <TextField
-              label="Start"
-              type="month"
-              value={entry.startDate}
-              onChange={(e) => update(entry.id, { startDate: e.target.value })}
+              label="Location"
+              value={entry.location}
+              placeholder="Berkeley, CA"
+              onChange={(e) => update(entry.id, { location: e.target.value })}
             />
             <TextField
-              label="End"
-              type="month"
-              value={entry.endDate}
-              disabled={entry.current}
-              onChange={(e) => update(entry.id, { endDate: e.target.value })}
+              label="GPA"
+              value={entry.gpa ?? ""}
+              placeholder="3.8 / 4.0"
+              onChange={(e) => update(entry.id, { gpa: e.target.value })}
             />
           </div>
-          <label className="flex items-center gap-2 text-sm text-midnight">
-            <input
-              type="checkbox"
-              checked={entry.current}
-              onChange={(e) =>
-                update(entry.id, {
-                  current: e.target.checked,
-                  endDate: e.target.checked ? "" : entry.endDate,
-                })
-              }
-              className="accent-navy"
-            />
-            Currently studying here
-          </label>
+          <DateRangeFields
+            startDate={entry.startDate}
+            endDate={entry.endDate}
+            current={entry.current}
+            currentLabel="Currently studying here"
+            onChange={(patch) => update(entry.id, patch)}
+          />
+          <CustomFieldsEditor
+            value={entry.customFields ?? []}
+            onChange={(customFields) => update(entry.id, { customFields })}
+          />
         </EntryCard>
       ))}
       <div>

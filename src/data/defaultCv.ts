@@ -69,6 +69,14 @@ export const defaultCv: CvData = {
           startDate: "2010-08",
           endDate: "2014-05",
           current: false,
+          gpa: "3.8 / 4.0",
+          customFields: [
+            {
+              id: "cf-1",
+              label: "Honors",
+              value: "Dean's List (2012–2014); graduated with distinction.",
+            },
+          ],
         },
       ],
     },

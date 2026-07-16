@@ -23,6 +23,24 @@ export function CvBuilder() {
     }
   };
 
+  // The browser's print-to-PDF uses document.title as the default filename, so
+  // set it to "CV_<Full name>_Pourity" for the print, then restore it after.
+  const exportPdf = () => {
+    const name = cv.personal.fullName
+      .trim()
+      .replace(/[\\/:*?"<>|]+/g, "")
+      .trim();
+    const previousTitle = document.title;
+    document.title = name ? `CV_${name}_Pourity` : "CV_Pourity";
+
+    const restore = () => {
+      document.title = previousTitle;
+      window.removeEventListener("afterprint", restore);
+    };
+    window.addEventListener("afterprint", restore);
+    window.print();
+  };
+
   return (
     <div className="flex h-full flex-col">
       {/* Mobile Edit / Preview switch — hidden on desktop */}
@@ -59,18 +77,12 @@ export function CvBuilder() {
             mobileView === "preview" ? "flex" : "hidden"
           }`}
         >
-          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-stone bg-white/60 px-4 py-2.5 sm:px-6">
-            <div className="flex items-center gap-2">
-              <Badge tone="ember">● ATS Compatible</Badge>
-              <span className="hidden text-xs text-slate sm:inline">
-                Single column · standard headings · selectable text
-              </span>
-            </div>
+          <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 border-b border-stone bg-white/60 px-4 py-2.5 sm:px-6">
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" onClick={reset}>
                 Reset
               </Button>
-              <Button variant="accent" size="sm" onClick={() => window.print()}>
+              <Button variant="accent" size="sm" onClick={exportPdf}>
                 Export PDF
               </Button>
             </div>

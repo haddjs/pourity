@@ -3,6 +3,7 @@ import { uid } from "../../../lib/format";
 import { TextField, TextArea } from "../../../components/ui/Field";
 import { Button } from "../../../components/ui/Button";
 import { EntryCard } from "../FormSection";
+import { DateRangeFields } from "./DateRangeFields";
 
 interface Props {
   value: ExperienceEntry[];
@@ -59,35 +60,13 @@ export function ExperienceEditor({ value, onChange }: Props) {
               onChange={(e) => update(entry.id, { location: e.target.value })}
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <TextField
-              label="Start"
-              type="month"
-              value={entry.startDate}
-              onChange={(e) => update(entry.id, { startDate: e.target.value })}
-            />
-            <TextField
-              label="End"
-              type="month"
-              value={entry.endDate}
-              disabled={entry.current}
-              onChange={(e) => update(entry.id, { endDate: e.target.value })}
-            />
-          </div>
-          <label className="flex items-center gap-2 text-sm text-midnight">
-            <input
-              type="checkbox"
-              checked={entry.current}
-              onChange={(e) =>
-                update(entry.id, {
-                  current: e.target.checked,
-                  endDate: e.target.checked ? "" : entry.endDate,
-                })
-              }
-              className="accent-navy"
-            />
-            I currently work here
-          </label>
+          <DateRangeFields
+            startDate={entry.startDate}
+            endDate={entry.endDate}
+            current={entry.current}
+            currentLabel="I currently work here"
+            onChange={(patch) => update(entry.id, patch)}
+          />
           <TextArea
             label="Achievements"
             rows={4}

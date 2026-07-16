@@ -1,77 +1,77 @@
-# React + TypeScript + Vite
+# Pourity
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Pourity is an ATS-friendly CV builder.** You fill in a structured form and watch a clean, single-column résumé render live beside it — then export it to PDF as selectable text that applicant-tracking systems can actually parse. Cover Letter and Motivation Letter makers are on the roadmap, drawing from the same profile.
 
-Currently, two official plugins are available:
+The interface follows a Swiss-influenced design system: a strict grid, deliberate neutrals (Parchment canvas, Midnight text), and a single expressive accent (Ember) reserved for calls to action.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Why ATS-friendly?
 
-## React Compiler
+Most résumés are read by software before a human ever sees them. Pourity's preview is built to survive that first pass:
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Single-column layout** — multi-column designs confuse many parsers.
+- **Standard section headings** — Work Experience, Education, Skills, etc.
+- **Contact details in the body** — never trapped in a page header or footer.
+- **`•` bullet points** and **`Mon YYYY` dates** — unambiguous to parse.
+- **Standard fonts** (Arial / Calibri) in the document itself, so nothing renders as symbols.
 
-Note: This will impact Vite dev & build performances.
+When you rename a heading to something a parser might not recognise, the editor shows a subtle hint rather than blocking you.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Two-panel builder** — a fixed 400px form and a fluid, live-updating preview that scroll independently.
+- **Editable, reorderable sections** — rename any heading, move sections up/down, delete them, or add new ones (Work Experience, Education, Skills, or free Text for a Summary/Profile/Objective).
+- **Structured inputs** — roles with month-picker dates, a "current" toggle, and one-achievement-per-line bullets; education entries; and skills grouped into editable categories.
+- **Autosave** — everything persists to `localStorage`, with schema migration so upgrades don't wipe your data.
+- **Export to PDF** — one click prints just the document, with the browser's default header/footer suppressed.
+- **Responsive** — a hamburger nav and an Edit/Preview toggle bring the whole builder to mobile.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **React 19** (with the React Compiler) + **TypeScript**
+- **Vite 8** for dev/build tooling
+- **Tailwind CSS v4** — design tokens defined in CSS (`@theme`) from the Pourity palette and type scale
+- **React Router** for navigation between the CV and letter makers
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting started
 
+```bash
+npm install
+npm run dev      # start the dev server (http://localhost:5173)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Other scripts:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm run build    # type-check (tsc -b) and build for production
+npm run preview  # preview the production build
+npm run lint     # run ESLint
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 
 ```
+src/
+├── components/
+│   ├── layout/        # AppShell, TopNav (app chrome)
+│   └── ui/            # Button, Field, TagInput, Badge — design-system primitives
+├── data/
+│   ├── defaultCv.ts   # seed content + legacy localStorage migration
+│   └── sections.ts    # section factory, kinds, ATS heading hints
+├── features/
+│   ├── cv/            # the CV builder
+│   │   ├── CvBuilder.tsx     # two-panel layout, autosave, PDF export
+│   │   ├── CvForm.tsx        # maps over sections → editors
+│   │   ├── CvPreview.tsx     # ATS-friendly document rendering
+│   │   ├── SectionShell.tsx  # editable heading + reorder/delete controls
+│   │   ├── editors/          # per-kind editors (experience, education, skills, text)
+│   │   └── sections/         # fixed Personal Info section
+│   └── letters/       # Cover / Motivation letter makers (coming next)
+├── lib/               # formatting helpers, useLocalStorage hook
+├── types.ts           # CV data model
+└── index.css          # Tailwind + design tokens + print styles
+```
+
+## Roadmap
+
+- Cover Letter maker (manual template, populated from CV data)
+- Motivation Letter maker

@@ -71,23 +71,41 @@
 /* ------------------------------------------------------------------ *
  * ATS-friendly CV document — standard fonts only (Arial / Calibri),
  * single column, body-text contact info. Kept deliberately plain so
- * applicant-tracking parsers read it cleanly.
+ * applicant-tracking parsers read it cleanly. Content is laid out on one
+ * or more A4 sheets (.cv-paper) by PaginatedDocument.
  * ------------------------------------------------------------------ */
 .cv-document {
   font-family: Arial, Calibri, "Helvetica Neue", sans-serif;
   color: #111111;
-  background: #ffffff;
   line-height: 1.4;
 }
 
+.cv-paper {
+  background: #ffffff;
+  box-sizing: border-box;
+  box-shadow:
+    0 1px 3px rgba(15, 25, 35, 0.12),
+    0 8px 24px rgba(15, 25, 35, 0.08);
+}
+
+/* Scale the fixed-width sheets to fit the column on screen only; print keeps
+ * them at true A4 so the browser paginates at the right size. */
+@media screen {
+  .cv-scale-inner {
+    transform: scale(var(--cv-scale, 1));
+    transform-origin: top left;
+  }
+}
+
 /* ------------------------------------------------------------------ *
- * Print — export the CV document only, as clean selectable text.
+ * Print — export the CV sheets only, as clean selectable text, one A4
+ * page per sheet.
  * ------------------------------------------------------------------ */
 @media print {
   /* margin: 0 removes the browser's injected header/footer (date, title,
-   * URL, page number). Page margins are re-added as .cv-document padding. */
+   * URL, page number). Page margins live in each sheet's padding instead. */
   @page {
-    size: letter;
+    size: A4;
     margin: 0;
   }
 
@@ -97,9 +115,21 @@
 
   /* The preview panel is display:none below the lg breakpoint (mobile
    * Edit/Preview toggle). When printing, the media width is the paper
-   * (~816px < lg), so force it back on — otherwise there is nothing to show. */
+   * (< lg), so force it back on — otherwise there is nothing to show. */
   .cv-print-panel {
     display: flex !important;
+  }
+
+  /* The off-screen measurer must never print. */
+  .cv-measure {
+    display: none !important;
+  }
+
+  /* Undo the on-screen fit-to-width framing. */
+  .cv-scale-frame {
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   .cv-document,
@@ -108,13 +138,23 @@
   }
 
   .cv-document {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    margin: 0;
-    padding: 0.5in 0.55in;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    gap: 0 !important;
+  }
+
+  .cv-paper {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
     box-shadow: none !important;
-    border: none !important;
+  }
+
+  /* One physical page per sheet. */
+  .cv-paper + .cv-paper {
+    break-before: page;
+    page-break-before: always;
   }
 }
