@@ -1,32 +1,23 @@
-import type { SkillCategory } from '../../../types'
-import { uid } from '../../../lib/format'
-import { TagInput } from '../../../components/ui/TagInput'
-import { Button } from '../../../components/ui/Button'
-import { FormSection } from '../FormSection'
+import type { SkillCategory } from "../../../types";
+import { uid } from "../../../lib/format";
+import { TagInput } from "../../../components/ui/TagInput";
+import { Button } from "../../../components/ui/Button";
 
 interface Props {
-  value: SkillCategory[]
-  onChange: (next: SkillCategory[]) => void
+  value: SkillCategory[];
+  onChange: (next: SkillCategory[]) => void;
 }
 
-const empty = (): SkillCategory => ({ id: uid(), name: '', skills: [] })
+const empty = (): SkillCategory => ({ id: uid(), name: "", skills: [] });
 
-export function SkillsSection({ value, onChange }: Props) {
+export function SkillsEditor({ value, onChange }: Props) {
   const update = (id: string, patch: Partial<SkillCategory>) =>
-    onChange(value.map((c) => (c.id === id ? { ...c, ...patch } : c)))
-
-  const add = () => onChange([...value, empty()])
-  const remove = (id: string) => onChange(value.filter((c) => c.id !== id))
+    onChange(value.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  const add = () => onChange([...value, empty()]);
+  const remove = (id: string) => onChange(value.filter((c) => c.id !== id));
 
   return (
-    <FormSection
-      title="Skills"
-      action={
-        <Button variant="ghost" size="sm" onClick={add}>
-          + Add category
-        </Button>
-      }
-    >
+    <>
       {value.length === 0 && (
         <p className="text-xs text-slate">
           No categories yet — group skills like “Design”, “Tools”, or
@@ -60,12 +51,16 @@ export function SkillsSection({ value, onChange }: Props) {
           />
         </div>
       ))}
-
-      {value.length > 0 && (
-        <p className="text-xs text-slate">
-          Use exact keywords from the job posting to pass ATS keyword matching.
-        </p>
-      )}
-    </FormSection>
-  )
+      <div className="flex items-center justify-between gap-2">
+        <Button variant="ghost" size="sm" onClick={add}>
+          + Add category
+        </Button>
+        {value.length > 0 && (
+          <span className="text-xs text-slate">
+            Use exact posting keywords for ATS.
+          </span>
+        )}
+      </div>
+    </>
+  );
 }

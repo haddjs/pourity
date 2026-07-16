@@ -1,17 +1,19 @@
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
-import { defaultCv } from "../../data/defaultCv";
+import { defaultCv, migrateInitialCv } from "../../data/defaultCv";
 import { useLocalStorage } from "../../lib/useLocalStorage";
 import type { CvData } from "../../types";
 import { CvForm } from "./CvForm";
 import { CvPreview } from "./CvPreview";
 
-// Bumped to v2 when skills changed from a flat list to editable categories.
-const STORAGE_KEY = "pourity.cv.v2";
+// v3: body sections became an ordered, editable list. Legacy v2 payloads are
+// migrated in via migrateInitialCv() so users keep their data.
+const STORAGE_KEY = "pourity.cv.v3";
 
 export function CvBuilder() {
-  const [cv, setCv] = useLocalStorage<CvData>(STORAGE_KEY, defaultCv);
+  const initial = useMemo(() => migrateInitialCv(), []);
+  const [cv, setCv] = useLocalStorage<CvData>(STORAGE_KEY, initial);
   // On mobile only one panel shows at a time; desktop shows both side by side.
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
 

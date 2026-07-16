@@ -55,10 +55,47 @@ export interface SkillCategory {
   skills: string[];
 }
 
+/**
+ * Body sections are an ordered, editable list. Every section carries its own
+ * heading (`title`) and a `kind` that determines which editor + renderer it
+ * uses, so headings can be renamed and new sections added or reordered freely.
+ */
+export type SectionKind = "text" | "experience" | "education" | "skills";
+
+interface SectionBase {
+  id: string;
+  title: string;
+}
+
+export interface CvTextSection extends SectionBase {
+  kind: "text";
+  /** Free paragraph — Professional Summary, Profile, Objective, etc. */
+  content: string;
+}
+
+export interface CvExperienceSection extends SectionBase {
+  kind: "experience";
+  entries: ExperienceEntry[];
+}
+
+export interface CvEducationSection extends SectionBase {
+  kind: "education";
+  entries: EducationEntry[];
+}
+
+export interface CvSkillsSection extends SectionBase {
+  kind: "skills";
+  categories: SkillCategory[];
+}
+
+export type CvSection =
+  | CvTextSection
+  | CvExperienceSection
+  | CvEducationSection
+  | CvSkillsSection;
+
 export interface CvData {
+  /** Fixed name + contact header — always first, not a titled section. */
   personal: PersonalInfo;
-  summary: string;
-  experience: ExperienceEntry[];
-  education: EducationEntry[];
-  skills: SkillCategory[];
+  sections: CvSection[];
 }

@@ -1,41 +1,33 @@
-import type { ExperienceEntry } from '../../../types'
-import { uid } from '../../../lib/format'
-import { TextField, TextArea } from '../../../components/ui/Field'
-import { Button } from '../../../components/ui/Button'
-import { FormSection, EntryCard } from '../FormSection'
+import type { ExperienceEntry } from "../../../types";
+import { uid } from "../../../lib/format";
+import { TextField, TextArea } from "../../../components/ui/Field";
+import { Button } from "../../../components/ui/Button";
+import { EntryCard } from "../FormSection";
 
 interface Props {
-  value: ExperienceEntry[]
-  onChange: (next: ExperienceEntry[]) => void
+  value: ExperienceEntry[];
+  onChange: (next: ExperienceEntry[]) => void;
 }
 
 const empty = (): ExperienceEntry => ({
   id: uid(),
-  position: '',
-  company: '',
-  location: '',
-  startDate: '',
-  endDate: '',
+  position: "",
+  company: "",
+  location: "",
+  startDate: "",
+  endDate: "",
   current: false,
-  bullets: '',
-})
+  bullets: "",
+});
 
-export function ExperienceSection({ value, onChange }: Props) {
+export function ExperienceEditor({ value, onChange }: Props) {
   const update = (id: string, patch: Partial<ExperienceEntry>) =>
-    onChange(value.map((e) => (e.id === id ? { ...e, ...patch } : e)))
-
-  const add = () => onChange([...value, empty()])
-  const remove = (id: string) => onChange(value.filter((e) => e.id !== id))
+    onChange(value.map((e) => (e.id === id ? { ...e, ...patch } : e)));
+  const add = () => onChange([...value, empty()]);
+  const remove = (id: string) => onChange(value.filter((e) => e.id !== id));
 
   return (
-    <FormSection
-      title="Work Experience"
-      action={
-        <Button variant="ghost" size="sm" onClick={add}>
-          + Add
-        </Button>
-      }
-    >
+    <>
       {value.length === 0 && (
         <p className="text-xs text-slate">
           No entries yet — add your most recent role first.
@@ -89,7 +81,7 @@ export function ExperienceSection({ value, onChange }: Props) {
               onChange={(e) =>
                 update(entry.id, {
                   current: e.target.checked,
-                  endDate: e.target.checked ? '' : entry.endDate,
+                  endDate: e.target.checked ? "" : entry.endDate,
                 })
               }
               className="accent-navy"
@@ -100,12 +92,17 @@ export function ExperienceSection({ value, onChange }: Props) {
             label="Achievements"
             rows={4}
             value={entry.bullets}
-            placeholder={'One achievement per line.\nStart with an action verb.'}
+            placeholder={"One achievement per line.\nStart with an action verb."}
             hint="Each line becomes a • bullet. Quantify impact where you can."
             onChange={(e) => update(entry.id, { bullets: e.target.value })}
           />
         </EntryCard>
       ))}
-    </FormSection>
-  )
+      <div>
+        <Button variant="ghost" size="sm" onClick={add}>
+          + Add role
+        </Button>
+      </div>
+    </>
+  );
 }
