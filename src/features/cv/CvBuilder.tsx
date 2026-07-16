@@ -1,5 +1,4 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { defaultCv, migrateInitialCv } from "../../data/defaultCv";
 import { useLocalStorage } from "../../lib/useLocalStorage";
