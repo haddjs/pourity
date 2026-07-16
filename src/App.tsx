@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { AppShell } from "./components/layout/AppShell";
 import { CvBuilder } from "./features/cv/CvBuilder";
-import { ComingSoon } from "./features/letters/ComingSoon";
+import { LetterBuilder } from "./features/letters/LetterBuilder";
+import { COVER_CONFIG, MOTIVATION_CONFIG } from "./features/letters/config";
 
 function App() {
   return (
@@ -10,21 +11,11 @@ function App() {
         <Route index element={<CvBuilder />} />
         <Route
           path="cover-letter"
-          element={
-            <ComingSoon
-              title="Cover Letter Maker"
-              description="Fill in the role, company, and a few highlights — Pourity assembles a formatted, ATS-friendly cover letter from your CV data. Landing here next."
-            />
-          }
+          element={<LetterBuilder key="cover" config={COVER_CONFIG} />}
         />
         <Route
           path="motivation-letter"
-          element={
-            <ComingSoon
-              title="Motivation Letter Maker"
-              description="Structured prompts guide a compelling motivation letter for applications and scholarships, drawn from the same profile. Landing here next."
-            />
-          }
+          element={<LetterBuilder key="motivation" config={MOTIVATION_CONFIG} />}
         />
       </Route>
     </Routes>

@@ -56,3 +56,34 @@ export function toLines(value: string): string[] {
 export function uid(): string {
   return Math.random().toString(36).slice(2, 10);
 }
+
+const FULL_MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/** Format a "YYYY-MM-DD" date value as "July 17, 2026" (letter date line). */
+export function formatLongDate(value: string): string {
+  if (!value) return "";
+  const [y, m, d] = value.split("-").map(Number);
+  if (!y || !m || !d || m < 1 || m > 12) return value;
+  return `${FULL_MONTHS[m - 1]} ${d}, ${y}`;
+}
+
+/** Today as a "YYYY-MM-DD" string (local time), for date inputs. */
+export function todayISO(): string {
+  const now = new Date();
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${mm}-${dd}`;
+}

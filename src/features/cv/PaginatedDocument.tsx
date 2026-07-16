@@ -130,11 +130,18 @@ export function PaginatedDocument({ blocks }: { blocks: DocBlock[] }) {
               className="cv-paper"
               style={{ width: A4_W, minHeight: A4_H, padding: PAD }}
             >
-              {page.map(({ index, marginTop }) => (
-                <div key={blocks[index].key} style={{ marginTop }}>
-                  {blocks[index].node}
-                </div>
-              ))}
+              {page.map(({ index, marginTop }) => {
+                // `pages` is computed in a layout effect, so for one render it
+                // can be stale after blocks shrink (a cleared field). Skip any
+                // index that no longer exists until pagination recomputes.
+                const block = blocks[index];
+                if (!block) return null;
+                return (
+                  <div key={block.key} style={{ marginTop }}>
+                    {block.node}
+                  </div>
+                );
+              })}
             </div>
           ))}
         </div>

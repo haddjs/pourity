@@ -25,10 +25,11 @@ export function TopNav() {
         className="flex items-baseline gap-1.5"
         onClick={() => setOpen(false)}
       >
-        <span className="font-display text-lg font-extrabold tracking-tight text-white">
-          Pourity
-        </span>
-        <span className="h-1.5 w-1.5 rounded-full bg-ember" aria-hidden />
+        <img
+          src="/pourity-main.svg"
+          alt="Pourity Logo"
+          className="h-7 w-auto"
+        />
       </NavLink>
 
       {/* Desktop nav */}
