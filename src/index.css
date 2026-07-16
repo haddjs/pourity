@@ -95,6 +95,13 @@
     visibility: hidden !important;
   }
 
+  /* The preview panel is display:none below the lg breakpoint (mobile
+   * Edit/Preview toggle). When printing, the media width is the paper
+   * (~816px < lg), so force it back on — otherwise there is nothing to show. */
+  .cv-print-panel {
+    display: flex !important;
+  }
+
   .cv-document,
   .cv-document * {
     visibility: visible !important;

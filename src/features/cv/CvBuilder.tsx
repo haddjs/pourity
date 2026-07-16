@@ -51,9 +51,11 @@ export function CvBuilder() {
           <CvForm cv={cv} onChange={setCv} />
         </div>
 
-        {/* Preview panel — fluid, scrolls independently */}
+        {/* Preview panel — fluid, scrolls independently.
+         * `cv-print-panel` keeps it rendered during print, where the media
+         * width drops below the lg breakpoint that normally reveals it. */}
         <div
-          className={`min-w-0 flex-1 flex-col lg:flex ${
+          className={`cv-print-panel min-w-0 flex-1 flex-col lg:flex ${
             mobileView === "preview" ? "flex" : "hidden"
           }`}
         >
